@@ -485,7 +485,13 @@ public abstract class SourceFile
                 AST_HOLDER.set(new AstHolder(ast, snapshot));
                 try
                 {
+                    long start = System.currentTimeMillis();
+
                     openWhenClosed(newBody());
+
+                    long duration = System.currentTimeMillis() - start;
+                    System.out.println("Building source file structure: "
+                        + duration + " ms");
                 }
                 finally
                 {

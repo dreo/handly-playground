@@ -84,7 +84,7 @@ public class HandlyXtextEditorCallback
 
     protected void afterSelectionChange(XtextEditor editor, ISelection selection)
     {
-        setHighlightRange(editor, selection);
+        //setHighlightRange(editor, selection);
     }
 
     protected void setHighlightRange(XtextEditor editor, ISelection selection)

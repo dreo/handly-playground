@@ -194,12 +194,20 @@ public class HandlyXtextDocument
         if (!hasPendingChange() && !force)
             return;
 
+        long start = System.currentTimeMillis();
+
         T2MReconcilingUnitOfWork reconcilingUnitOfWork =
             new T2MReconcilingUnitOfWork(force);
         if (processor != null)
             processor.process(reconcilingUnitOfWork);
         else
             internalModify(reconcilingUnitOfWork);
+
+        long duration = System.currentTimeMillis() - start;
+        String thread = Thread.currentThread().getName();
+        System.out.println("Reconcile: " + duration + " ms [" + thread + "]");
+        if ("main".equals(thread))
+            Thread.dumpStack();
     }
 
     @Override
@@ -313,7 +321,7 @@ public class HandlyXtextDocument
         final boolean forced)
     {
         reconciledSnapshot = snapshot;
-
+        
         locker.notify(new IUnitOfWork.Void<XtextResource>()
         {
             @Override
@@ -475,7 +483,14 @@ public class HandlyXtextDocument
                 if (force) // reconciling is forced
                 {
                     NonExpiringSnapshot snapshot = reconciledSnapshot;
+                    
+                    long start = System.currentTimeMillis();
+                    
                     resource.reparse(snapshot.getContents());
+                    
+                    long duration = System.currentTimeMillis() - start;
+                    System.out.println("Full parse: " + duration + " ms");
+                    
                     reconciled(snapshot, true);
                 }
             }
@@ -487,8 +502,14 @@ public class HandlyXtextDocument
                 long modificationStamp = change.getModificationStamp();
                 try
                 {
+                    long start = System.currentTimeMillis();
+                    
                     resource.update(replaceRegion.getOffset(),
                         replaceRegion.getLength(), replaceRegion.getText());
+                    
+                    long duration = System.currentTimeMillis() - start;
+                    System.out.println("Partial parse: " + duration + " ms");
+                    
                     resource.setModificationStamp(modificationStamp);
                 }
                 catch (Exception e)

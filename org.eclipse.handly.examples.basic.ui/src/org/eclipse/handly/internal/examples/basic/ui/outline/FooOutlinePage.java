@@ -83,6 +83,7 @@ public final class FooOutlinePage
     public void createControl(Composite parent)
     {
         super.createControl(parent);
+        getTreeViewer().setUseHashlookup(true);
         getTreeViewer().setContentProvider(contentProvider);
         getTreeViewer().setLabelProvider(labelProvider);
         getTreeViewer().setInput(computeInput());
@@ -147,6 +148,8 @@ public final class FooOutlinePage
 
     private void refresh()
     {
+        long start = System.currentTimeMillis();
+        
         Control control = getControl();
         control.setRedraw(false);
         BusyIndicator.showWhile(control.getDisplay(), new Runnable()
@@ -159,6 +162,9 @@ public final class FooOutlinePage
             }
         });
         control.setRedraw(true);
+        
+        long duration = System.currentTimeMillis() - start;
+        System.out.println("Outline refresh: " + duration + " ms");
     }
 
     private class LinkingHelper
@@ -171,7 +177,7 @@ public final class FooOutlinePage
                 {
                     if (!getTreeViewer().getControl().isFocusControl())
                     {
-                        linkToOutline(event.getSelection());
+                        //linkToOutline(event.getSelection());
                     }
                 }
             };

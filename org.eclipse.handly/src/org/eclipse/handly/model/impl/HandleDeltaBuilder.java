@@ -89,12 +89,17 @@ public class HandleDeltaBuilder
      */
     public final void buildDelta()
     {
+        long start = System.currentTimeMillis();
+        
         delta = new HandleDelta(element);
         recordNewPositions(element, 0);
         findAdditions(element, 0);
         findDeletions();
         findChangesInPositioning(element, 0);
         trimDelta(delta);
+        
+        long duration = System.currentTimeMillis() - start;
+        System.out.println("Bulding delta: " + duration + " ms");
     }
 
     /**
