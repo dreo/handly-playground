@@ -76,6 +76,12 @@
          <adapter
                type="org.eclipse.core.resources.IResource">
          </adapter>
+         <adapter
+               type="org.eclipse.ui.IPersistableElement">
+         </adapter>
+         <adapter
+               type="org.eclipse.ui.IContainmentAdapter">
+         </adapter>
       </factory>
    </extension>
    <extension
@@ -128,6 +134,9 @@
             <actionExtension
                   pattern="org.eclipse.handly.examples.basic.ui.navigator.OpenActionProvider">
             </actionExtension>
+            <actionExtension
+                  pattern="org.eclipse.handly.examples.basic.ui.navigator.WorkingSetActionProvider">
+            </actionExtension>
          </includes>
       </viewerActionBinding>
    </extension>
@@ -165,6 +174,11 @@
       <actionProvider
             id="org.eclipse.handly.examples.basic.ui.navigator.OpenActionProvider"
             class="org.eclipse.handly.internal.examples.basic.ui.navigator.OpenActionProvider">
+         <enablement></enablement>
+      </actionProvider>
+      <actionProvider
+            id="org.eclipse.handly.examples.basic.ui.navigator.WorkingSetActionProvider"
+            class="org.eclipse.handly.internal.examples.basic.ui.navigator.WorkingSetActionProvider">
          <enablement></enablement>
       </actionProvider>
    </extension>
@@ -219,6 +233,24 @@
             </visibleWhen>
          </command>
       </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.workingSets">
+      <workingSet
+            id="org.eclipse.handly.examples.basic.ui.FooWorkingSetPage"
+            name="Foo"
+            description="Working set for Foo elements"
+            pageClass="org.eclipse.handly.internal.examples.basic.ui.workingset.FooWorkingSetPage"
+            elementAdapterClass="org.eclipse.handly.internal.examples.basic.ui.workingset.FooWorkingSetElementAdapter"
+            updaterClass="org.eclipse.handly.internal.examples.basic.ui.workingset.FooWorkingSetUpdater">
+      </workingSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.elementFactories">
+      <factory
+            id="org.eclipse.handly.examples.basic.ui.PersistableFooElementFactory"
+            class="org.eclipse.handly.internal.examples.basic.ui.model.PersistableFooElementFactory">
+      </factory>
    </extension>
 
 </plugin>
