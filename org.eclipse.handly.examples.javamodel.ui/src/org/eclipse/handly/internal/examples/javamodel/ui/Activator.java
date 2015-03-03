@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.handly.internal.examples.javamodel.ui;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -23,6 +25,16 @@ public class Activator
         "org.eclipse.handly.examples.javamodel.ui"; //$NON-NLS-1$
 
     private static Activator plugin;
+    
+    public static void log(IStatus status)
+    {
+        plugin.getLog().log(status);
+    }
+
+    public static IStatus createErrorStatus(String msg, Throwable e)
+    {
+        return new Status(IStatus.ERROR, PLUGIN_ID, 0, msg, e);
+    }
 
     @Override
     public void start(BundleContext context) throws Exception
